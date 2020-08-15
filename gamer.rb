@@ -9,34 +9,31 @@ class Gamer
     @name = name
   end
 
-  def init_round(deck)
+  def init(deck)
     @cards = []
-    2.times { take_card(deck) }
+    @deck = deck
+    2.times { take_card }
     compute_sum
   end
 
-  def take_card(deck)
-    @cards << deck.delete(deck.sample)
+  def take_card
+    @cards << @deck.take
   end
 
   def compute_sum
     sum = 0
 
     # Сумма по картам без тузов
-    @cards.select { |card| card.slice(0) != 'Т' }.each do |card|
-      c = card.slice(0)
-      if c =~ /[2-9]/
-        sum += c.to_i
-      else
-        sum += 10
-      end
+    @cards.select { |card| card.value != 'Т' }.each do |card|
+      value = card.value.to_i
+      sum += value
+      sum += 10 if value == 0
     end
     best_sum = sum
 
-    # Количество тузов
-    n = @cards.select { |card| card.slice(0) == 'Т' }.count
-
     # Перебор комбинаций очков с тузами
+    n = @cards.select { |card| card.value == 'Т' }.count
+
     (2**n).times do |i|
       new_sum = sum
       n.times do |j|
