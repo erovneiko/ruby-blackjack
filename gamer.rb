@@ -21,31 +21,8 @@ class Gamer
   end
 
   def compute_sum
-    sum = 0
-
-    # Сумма по картам без тузов
-    @cards.select { |card| card.value != 'Т' }.each do |card|
-      value = card.value.to_i
-      sum += value
-      sum += 10 if value == 0
-    end
-    best_sum = sum
-
-    # Перебор комбинаций очков с тузами
-    n = @cards.select { |card| card.value == 'Т' }.count
-
-    (2**n).times do |i|
-      new_sum = sum
-      n.times do |j|
-        if i[j] == 1
-          new_sum += 11
-        else
-          new_sum += 1
-        end
-      end
-      best_sum = new_sum if new_sum <= 21 && new_sum > best_sum
-    end
-
-    @sum = best_sum
+    @sum = @cards.sum { |card| card.score }
+    @cards.select { |card| card.value == 'Т' } \
+      .count.times { @sum -= 10 if @sum > 21 }
   end
 end

@@ -6,6 +6,6 @@ class User < Gamer
     actions << :skip
     actions << :add if @cards.size == 2
     actions << :open
-    return(actions)
+    actions
   end
 end

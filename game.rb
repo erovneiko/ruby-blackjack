@@ -72,6 +72,6 @@ class Game
       @gamer2.bank += @bet  
     end
 
-    return(winner)
+    winner
   end
 end
